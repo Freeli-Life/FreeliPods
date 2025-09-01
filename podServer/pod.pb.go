@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -20,18 +21,156 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type RegisterUsernameRequest struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Salt                []byte                 `protobuf:"bytes,1,opt,name=salt,proto3" json:"salt,omitempty"`
+	Username            string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	PublicSigningKey    []byte                 `protobuf:"bytes,3,opt,name=public_signing_key,json=publicSigningKey,proto3" json:"public_signing_key,omitempty"`
+	PublicEncryptionKey []byte                 `protobuf:"bytes,4,opt,name=public_encryption_key,json=publicEncryptionKey,proto3" json:"public_encryption_key,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *RegisterUsernameRequest) Reset() {
+	*x = RegisterUsernameRequest{}
+	mi := &file_protos_pod_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterUsernameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterUsernameRequest) ProtoMessage() {}
+
+func (x *RegisterUsernameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_protos_pod_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterUsernameRequest.ProtoReflect.Descriptor instead.
+func (*RegisterUsernameRequest) Descriptor() ([]byte, []int) {
+	return file_protos_pod_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *RegisterUsernameRequest) GetSalt() []byte {
+	if x != nil {
+		return x.Salt
+	}
+	return nil
+}
+
+func (x *RegisterUsernameRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *RegisterUsernameRequest) GetPublicSigningKey() []byte {
+	if x != nil {
+		return x.PublicSigningKey
+	}
+	return nil
+}
+
+func (x *RegisterUsernameRequest) GetPublicEncryptionKey() []byte {
+	if x != nil {
+		return x.PublicEncryptionKey
+	}
+	return nil
+}
+
+type RegisterUsernameResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	ServerSignature []byte                 `protobuf:"bytes,1,opt,name=server_signature,json=serverSignature,proto3" json:"server_signature,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *RegisterUsernameResponse) Reset() {
+	*x = RegisterUsernameResponse{}
+	mi := &file_protos_pod_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterUsernameResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterUsernameResponse) ProtoMessage() {}
+
+func (x *RegisterUsernameResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_protos_pod_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterUsernameResponse.ProtoReflect.Descriptor instead.
+func (*RegisterUsernameResponse) Descriptor() ([]byte, []int) {
+	return file_protos_pod_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *RegisterUsernameResponse) GetServerSignature() []byte {
+	if x != nil {
+		return x.ServerSignature
+	}
+	return nil
+}
+
 var File_protos_pod_proto protoreflect.FileDescriptor
 
 const file_protos_pod_proto_rawDesc = "" +
 	"\n" +
-	"\x10protos/pod.proto\x12\x03pod2\f\n" +
+	"\x10protos/pod.proto\x12\x03pod\"\xab\x01\n" +
+	"\x17RegisterUsernameRequest\x12\x12\n" +
+	"\x04salt\x18\x01 \x01(\fR\x04salt\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12,\n" +
+	"\x12public_signing_key\x18\x03 \x01(\fR\x10publicSigningKey\x122\n" +
+	"\x15public_encryption_key\x18\x04 \x01(\fR\x13publicEncryptionKey\"E\n" +
+	"\x18RegisterUsernameResponse\x12)\n" +
+	"\x10server_signature\x18\x01 \x01(\fR\x0fserverSignature2]\n" +
 	"\n" +
-	"PodServiceB\rZ\v./podServerb\x06proto3"
+	"PodService\x12O\n" +
+	"\x10RegisterUsername\x12\x1c.pod.RegisterUsernameRequest\x1a\x1d.pod.RegisterUsernameResponseB\rZ\v./podServerb\x06proto3"
 
-var file_protos_pod_proto_goTypes = []any{}
+var (
+	file_protos_pod_proto_rawDescOnce sync.Once
+	file_protos_pod_proto_rawDescData []byte
+)
+
+func file_protos_pod_proto_rawDescGZIP() []byte {
+	file_protos_pod_proto_rawDescOnce.Do(func() {
+		file_protos_pod_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_protos_pod_proto_rawDesc), len(file_protos_pod_proto_rawDesc)))
+	})
+	return file_protos_pod_proto_rawDescData
+}
+
+var file_protos_pod_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_protos_pod_proto_goTypes = []any{
+	(*RegisterUsernameRequest)(nil),  // 0: pod.RegisterUsernameRequest
+	(*RegisterUsernameResponse)(nil), // 1: pod.RegisterUsernameResponse
+}
 var file_protos_pod_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
+	0, // 0: pod.PodService.RegisterUsername:input_type -> pod.RegisterUsernameRequest
+	1, // 1: pod.PodService.RegisterUsername:output_type -> pod.RegisterUsernameResponse
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -48,12 +187,13 @@ func file_protos_pod_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_protos_pod_proto_rawDesc), len(file_protos_pod_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_protos_pod_proto_goTypes,
 		DependencyIndexes: file_protos_pod_proto_depIdxs,
+		MessageInfos:      file_protos_pod_proto_msgTypes,
 	}.Build()
 	File_protos_pod_proto = out.File
 	file_protos_pod_proto_goTypes = nil

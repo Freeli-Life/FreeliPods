@@ -7,7 +7,10 @@
 package podServer
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -15,10 +18,15 @@ import (
 // Requires gRPC-Go v1.64.0 or later.
 const _ = grpc.SupportPackageIsVersion9
 
+const (
+	PodService_RegisterUsername_FullMethodName = "/pod.PodService/RegisterUsername"
+)
+
 // PodServiceClient is the client API for PodService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PodServiceClient interface {
+	RegisterUsername(ctx context.Context, in *RegisterUsernameRequest, opts ...grpc.CallOption) (*RegisterUsernameResponse, error)
 }
 
 type podServiceClient struct {
@@ -29,10 +37,21 @@ func NewPodServiceClient(cc grpc.ClientConnInterface) PodServiceClient {
 	return &podServiceClient{cc}
 }
 
+func (c *podServiceClient) RegisterUsername(ctx context.Context, in *RegisterUsernameRequest, opts ...grpc.CallOption) (*RegisterUsernameResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterUsernameResponse)
+	err := c.cc.Invoke(ctx, PodService_RegisterUsername_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PodServiceServer is the server API for PodService service.
 // All implementations must embed UnimplementedPodServiceServer
 // for forward compatibility.
 type PodServiceServer interface {
+	RegisterUsername(context.Context, *RegisterUsernameRequest) (*RegisterUsernameResponse, error)
 	mustEmbedUnimplementedPodServiceServer()
 }
 
@@ -43,6 +62,9 @@ type PodServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedPodServiceServer struct{}
 
+func (UnimplementedPodServiceServer) RegisterUsername(context.Context, *RegisterUsernameRequest) (*RegisterUsernameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterUsername not implemented")
+}
 func (UnimplementedPodServiceServer) mustEmbedUnimplementedPodServiceServer() {}
 func (UnimplementedPodServiceServer) testEmbeddedByValue()                    {}
 
@@ -64,13 +86,36 @@ func RegisterPodServiceServer(s grpc.ServiceRegistrar, srv PodServiceServer) {
 	s.RegisterService(&PodService_ServiceDesc, srv)
 }
 
+func _PodService_RegisterUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterUsernameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PodServiceServer).RegisterUsername(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PodService_RegisterUsername_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PodServiceServer).RegisterUsername(ctx, req.(*RegisterUsernameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PodService_ServiceDesc is the grpc.ServiceDesc for PodService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PodService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pod.PodService",
 	HandlerType: (*PodServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "protos/pod.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RegisterUsername",
+			Handler:    _PodService_RegisterUsername_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "protos/pod.proto",
 }

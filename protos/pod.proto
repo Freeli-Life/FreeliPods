@@ -5,5 +5,16 @@ package pod;
 option go_package = "./podServer";
 
 service PodService {
+  rpc RegisterUsername(RegisterUsernameRequest) returns (RegisterUsernameResponse);
+}
 
+message RegisterUsernameRequest {
+  bytes salt = 1;
+  string username = 2;
+  bytes public_signing_key = 3;
+  bytes public_encryption_key = 4;
+}
+
+message RegisterUsernameResponse {
+  bytes server_signature = 1;
 }
