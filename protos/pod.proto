@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package pod;
+
+option go_package = "./podServer";
+
+service PodService {
+
+}
