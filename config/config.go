@@ -44,7 +44,11 @@ func createDefaultConfig() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("warning: failed to close config file: %v", err)
+		}
+	}()
 
 	writer := bufio.NewWriter(file)
 	_, err = writer.WriteString(
@@ -59,7 +63,12 @@ func createDefaultConfig() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	writer.Flush()
+
+	err = writer.Flush()
+	if err != nil {
+		return nil, err
+	}
+
 	return cfg, nil
 }
 
@@ -68,7 +77,11 @@ func readConfigFromFile() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("warning: failed to close config file: %v", err)
+		}
+	}()
 
 	cfg := &Config{}
 	scanner := bufio.NewScanner(file)
